@@ -1,8 +1,13 @@
 package htmlproducer;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,13 +35,34 @@ public class HTMLProducerFXMLController implements Initializable {
        generateButton.setOnAction((event) -> {
             WebSite site = WebSiteFactory.createWebSite(WebSiteType.NEWS);
         });
-       saveMenuItem.setOnAction((event) ->{
+       saveMenuItem.setOnAction((event) -> {
            FileChooser fileChooser = new FileChooser(); 
-           fileChooser.setTitle("Zapis pliku HTML");
+           fileChooser.setTitle("Zapis plików HTML");
            fileChooser.getExtensionFilters().add(new ExtensionFilter("Pliki HTML", "*.html", "*.htm"));
            File selectedFile = fileChooser.showSaveDialog(null);
-           if(selectedFile != null) writeToFile(htmlTextArea.getText());
+           if(selectedFile != null) writeToFile(selectedFile.getPath(), htmlTextArea.getText());
+       });
+       openMenuItem.setOnAction((event) -> {
+           FileChooser fileChooser = new FileChooser(); 
+           fileChooser.setTitle("Odczyt plików HTML");
+           fileChooser.getExtensionFilters().add(new ExtensionFilter("Pliki HTML", "*.html", "*.htm"));
+           File selectedFile = fileChooser.showOpenDialog(null);
+           if(selectedFile != null) openFile(selectedFile.getPath());
        });
     }    
-    
+    private void writeToFile(String path, String html){
+        try{
+            Files.write(Paths.get(path), html.getBytes());
+        }catch(IOException e){
+            Logger.getLogger(HTMLProducerFXMLController.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    private void openFile(String path){
+        try{
+            htmlTextArea.setText(new String(Files.readAllBytes(Paths.get(path))));
+        }catch(IOException e){
+            Logger.getLogger(HTMLProducerFXMLController.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
 }
+
