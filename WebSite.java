@@ -13,21 +13,20 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Text;
 
 public class WebSite {
-    private Document htmlDocument;
+    protected Document htmlDocument;
+    private Element rootElement;
+    protected Element titleElement;
     public WebSite(){
         try{
-            Element rootElement, titleElement;
-            Text titleNode;
             htmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             rootElement = htmlDocument.createElement("html");
-            titleElement = htmlDocument.createElement("title");
-            titleNode = htmlDocument.createTextNode("Jakiś tytuł");
             htmlDocument.appendChild(rootElement);
-            rootElement.appendChild(titleElement);
-            titleElement.appendChild(titleNode);
+            Element headElement = htmlDocument.createElement("head");
+            htmlDocument.appendChild(headElement);
+            titleElement = htmlDocument.createElement("title");
+            headElement.appendChild(titleElement);
         }catch(ParserConfigurationException e){
             Logger.getLogger(WebSite.class.getName()).log(Level.SEVERE, null, e);
         }
