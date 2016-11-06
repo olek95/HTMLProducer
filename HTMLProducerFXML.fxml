@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htmlproducer.HTMLProducerFXMLController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="590.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="htmlproducer.HTMLProducerFXMLController">
    <children>
       <MenuBar layoutX="1.0" layoutY="2.0" prefHeight="25.0" prefWidth="600.0">
         <menus>
@@ -33,14 +33,14 @@
          <top>
             <Pane prefHeight="63.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <RadioButton layoutX="45.0" layoutY="23.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" selected="true" text="Galeria zdjęć">
+                  <RadioButton fx:id="photoGalleryRadioButton" layoutX="45.0" layoutY="23.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" selected="true" text="Galeria zdjęć">
                      <toggleGroup>
                         <ToggleGroup fx:id="websiteTypes" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton layoutX="154.0" layoutY="23.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Strona informacyjna" toggleGroup="$websiteTypes" />
-                  <RadioButton layoutX="305.0" layoutY="23.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Strona kontaktowa" toggleGroup="$websiteTypes" />
-                  <RadioButton layoutX="449.0" layoutY="23.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Aktualności" toggleGroup="$websiteTypes" />
+                  <RadioButton fx:id="informationRadioButton" layoutX="154.0" layoutY="23.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Strona informacyjna" toggleGroup="$websiteTypes" />
+                  <RadioButton fx:id="contactRadioButton" layoutX="305.0" layoutY="23.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Strona kontaktowa" toggleGroup="$websiteTypes" />
+                  <RadioButton fx:id="newsRadioButton" layoutX="449.0" layoutY="23.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="Aktualności" toggleGroup="$websiteTypes" />
                </children>
             </Pane>
          </top>
@@ -57,3 +57,4 @@
       </BorderPane>
    </children>
 </AnchorPane>
+
