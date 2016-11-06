@@ -16,7 +16,7 @@ import org.w3c.dom.Element;
 
 public class WebSite {
     protected Document htmlDocument;
-    private Element rootElement;
+    protected Element rootElement;
     protected Element titleElement;
     public WebSite(){
         try{
@@ -24,14 +24,14 @@ public class WebSite {
             rootElement = htmlDocument.createElement("html");
             htmlDocument.appendChild(rootElement);
             Element headElement = htmlDocument.createElement("head");
-            htmlDocument.appendChild(headElement);
+            rootElement.appendChild(headElement);
             titleElement = htmlDocument.createElement("title");
             headElement.appendChild(titleElement);
         }catch(ParserConfigurationException e){
             Logger.getLogger(WebSite.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    public String getWebSiteContent() throws TransformerException{
+    public String getHtml() throws TransformerException{
         Transformer htmlTransformer = TransformerFactory.newInstance().newTransformer(); 
         htmlTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
         htmlTransformer.setOutputProperty(OutputKeys.METHOD, "html");
