@@ -8,14 +8,15 @@ import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javax.xml.transform.TransformerException;
 
 public class HTMLProducerFXMLController implements Initializable {
     
@@ -26,14 +27,20 @@ public class HTMLProducerFXMLController implements Initializable {
     @FXML
     private TextArea htmlTextArea;
     @FXML
-    private void handleGenerateButtonAction(ActionEvent event) {
-        
-    }
-    
+    private RadioButton photoGalleryRadioButton, informationRadioButton, contactRadioButton, newsRadioButton;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        generateButton.setOnAction((event) -> {
-            WebSite site = WebSiteFactory.createWebSite(WebSiteType.NEWS);
+            WebSite site;
+            if(photoGalleryRadioButton.isSelected()) site = WebSiteFactory.createWebSite(WebSiteType.PHOTOS);
+            else if(informationRadioButton.isSelected()) site = WebSiteFactory.createWebSite(WebSiteType.INFORMATION);
+            else if(contactRadioButton.isSelected()) site = WebSiteFactory.createWebSite(WebSiteType.CONTACT);
+            else site = WebSiteFactory.createWebSite(WebSiteType.NEWS);
+            try{
+                htmlTextArea.setText(site.getHtml());
+            }catch(TransformerException e){
+                Logger.getLogger(HTMLProducerFXMLController.class.getName()).log(Level.SEVERE, null, e);
+            }
         });
        saveMenuItem.setOnAction((event) -> {
            FileChooser fileChooser = new FileChooser(); 
