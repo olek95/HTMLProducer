@@ -1,6 +1,5 @@
 package htmlproducer;
 
-import java.util.Random;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -15,7 +14,6 @@ public class InformationWebSite extends WebSite{
         Element bodyElement, tagElement;
         Text text;
         int pageSize;
-        Random rand = new Random();
         titleElement.appendChild(htmlDocument.createTextNode("Strona informacyjna."));
         bodyElement = htmlDocument.createElement("body");
         rootElement.appendChild(bodyElement);
@@ -25,28 +23,18 @@ public class InformationWebSite extends WebSite{
             tagElement = getTag();
             Element formattingElement = formatElement(tagElement);
             addAttributes(tagElement);
-            text = generateText();
+            text = htmlDocument.createTextNode(generateText(94, 32, rand.nextInt(50) + 1));
             bodyElement.appendChild(tagElement);
             if(formattingElement == null) tagElement.appendChild(text);
             else formattingElement.appendChild(text);
         }
     }
     private Element getTag(){
-        Random rand = new Random();
         String tag = availableTags[rand.nextInt(availableTags.length)];
         if(tag.equals("h")) tag += rand.nextInt(6) + 1;
         return htmlDocument.createElement(tag);
     }
-    private Text generateText(){
-        Random rand = new Random();
-        String text = "";
-        int textSize = rand.nextInt(50) + 1; 
-        for(int i = 0; i < textSize; i++)
-            text += (char)(rand.nextInt(94) + 32);
-        return htmlDocument.createTextNode(text);
-    }
     private void addAttributes(Element el){
-        Random rand = new Random();
         int attributesNumber = rand.nextInt(availableAttributes.length + 1);
         int option;
         String attribute;
@@ -54,7 +42,7 @@ public class InformationWebSite extends WebSite{
             for(int i = 0; i < attributesNumber; i++){
                 attribute = availableAttributes[rand.nextInt(availableAttributes.length)];
                 if(el.getAttribute(attribute).equals("")){
-                    if(attribute.equals("title")) el.setAttribute(attribute, generateText().getTextContent());
+                    if(attribute.equals("title")) el.setAttribute(attribute, generateText(94, 32, rand.nextInt(50) + 1));
                     else if(attribute.equals("style")){
                         int range;
                         if(isMarked(el)) range = 2;
@@ -71,7 +59,6 @@ public class InformationWebSite extends WebSite{
             }
     }
     private Element formatElement(Element el){
-        Random rand = new Random(); 
         Element tempElement = null;
         int elementsNumber = rand.nextInt(availableFormattingElements.length + 1);
         int[] usedIndexes = new int[availableFormattingElements.length];
