@@ -15,7 +15,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class WebSite {
-    protected Document htmlDocument;
+    protected static Document htmlDocument;
     protected Element rootElement;
     protected Element titleElement;
     public WebSite(){
@@ -41,3 +41,4 @@ public class WebSite {
         return baos.toString();
     }
 }
+
