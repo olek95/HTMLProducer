@@ -2,11 +2,13 @@ package htmlproducer;
 
 import java.util.Random;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 public class InformationWebSite extends WebSite{
     private String[] availableTags = {"h", "p"};
-    private String[] availableAttributes = {"title", "color", "font-size"};
+    private String[] availableAttributes = {"title", "style"};
     private String[] availableFormattingElements = {"b", "strong", "i", "em", "mark"};
     public InformationWebSite(){
         super();
@@ -21,13 +23,12 @@ public class InformationWebSite extends WebSite{
         String tag;
         for(int i = 0; i < pageSize; i++){
             tagElement = getTag();
+            Element formattingElement = formatElement(tagElement);
             addAttributes(tagElement);
-            //Element formattingElement = formatElement(tagElement);
             text = generateText();
             bodyElement.appendChild(tagElement);
-            //if(formattingElement != null) tagElement.appendChild(text);
-            //else formattingElement.appendChild(text);
-            tagElement.appendChild(text);
+            if(formattingElement == null) tagElement.appendChild(text);
+            else formattingElement.appendChild(text);
         }
     }
     private Element getTag(){
@@ -47,13 +48,25 @@ public class InformationWebSite extends WebSite{
     private void addAttributes(Element el){
         Random rand = new Random();
         int attributesNumber = rand.nextInt(availableAttributes.length + 1);
+        int option;
         String attribute;
         if(attributesNumber != 0)
             for(int i = 0; i < attributesNumber; i++){
                 attribute = availableAttributes[rand.nextInt(availableAttributes.length)];
                 if(el.getAttribute(attribute).equals("")){
                     if(attribute.equals("title")) el.setAttribute(attribute, generateText().getTextContent());
-                    else if(attribute.equals("color")) el.setAttribute("style", attribute + ":rgb(" + (rand.nextInt(255)+1) + "," + (rand.nextInt(255)+1) + "," + (rand.nextInt(255)+1) + ")");
+                    else if(attribute.equals("style")){
+                        int range;
+                        if(isMarked(el)) range = 2;
+                        else range = 3;
+                        if((option = rand.nextInt(range)) == 0)
+                            el.setAttribute(attribute, "font-size:" + (rand.nextInt(1000) + 1) + "%"); // zakładam że nie moze być więcej niż 1000 procent
+                        else if(option == 1){
+                            String[] positions = {"left", "center", "right"};
+                            el.setAttribute(attribute, "text-align:" + positions[rand.nextInt(positions.length)]);
+                        }else 
+                            el.setAttribute(attribute, "color:rgb(" + (rand.nextInt(255)+1) + "," + (rand.nextInt(255)+1) + "," + (rand.nextInt(255)+1) + ")");
+                    }
                 }else i--;
             }
     }
@@ -62,16 +75,26 @@ public class InformationWebSite extends WebSite{
         Element tempElement = null;
         int elementsNumber = rand.nextInt(availableFormattingElements.length + 1);
         int[] usedIndexes = new int[availableFormattingElements.length];
-        System.out.println(usedIndexes[0]);
         if(elementsNumber != 0)
             for(int i = 0; i < elementsNumber; i++){
                 int index = rand.nextInt(availableFormattingElements.length);
                 if(usedIndexes[index] != 1){
                     tempElement = htmlDocument.createElement(availableFormattingElements[index]);
                     el.appendChild(tempElement);
+                    el = tempElement;
+                    usedIndexes[index] = 1;
                 }
                 else i--;
             }
         return tempElement;
+    }
+    private boolean isMarked(Element el){
+        NodeList list = el.getChildNodes(); 
+        int size = list.getLength(); 
+        for(int i = 0; i < size; i++){
+            Node n = list.item(i);
+            if(n.getNodeName().equals("mark") || isMarked((Element)n)) return true;
+        }
+        return false;
     }
 }
