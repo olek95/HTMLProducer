@@ -1,5 +1,11 @@
 package htmlproducer;
 
+/**
+ * Klasa <code>WebSiteFactory</code> reprezentuje fabrykę tworzącą różnego typu 
+ * strony internetowe. Móżliwe typy to galeria zdjeć, strona informacyjna, strona 
+ * kontaktowa i aktualności. 
+ * @author AleksanderSklorz
+ */
 public class WebSiteFactory {
     public static WebSite createWebSite(WebSiteType type){
         if(WebSiteType.PHOTOS.equals(type)){
