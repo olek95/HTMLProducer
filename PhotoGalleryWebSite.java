@@ -2,10 +2,8 @@ package htmlproducer;
 
 import java.io.File;
 import java.util.List;
-import java.util.Random;
 import javafx.stage.FileChooser;
 import org.w3c.dom.Element;
-import org.w3c.dom.Text;
 
 public class PhotoGalleryWebSite extends WebSite{
     private String[] availableAttributes = {"title", "width", "height"};
@@ -31,23 +29,14 @@ public class PhotoGalleryWebSite extends WebSite{
         return imgElement;
     }
     private void addAttributes(Element el){
-        Random rand = new Random(); 
         int attributesNumber = rand.nextInt(availableAttributes.length + 1);
         String attribute; 
         for(int i = 0; i < attributesNumber; i++){
             attribute = availableAttributes[rand.nextInt(availableAttributes.length)];
             if(el.getAttribute(attribute).equals("")){
-                if(attribute.equals("title")) el.setAttribute(attribute, generateText().getTextContent());
+                if(attribute.equals("title")) el.setAttribute(attribute, generateText(94, 32, rand.nextInt(50) + 1));
                 else el.setAttribute(attribute, (rand.nextInt(500) + 1) + "");
             }
         }
-    }
-    private Text generateText(){
-        Random rand = new Random();
-        String text = "";
-        int textSize = rand.nextInt(50) + 1; 
-        for(int i = 0; i < textSize; i++)
-            text += (char)(rand.nextInt(94) + 32);
-        return htmlDocument.createTextNode(text);
     }
 }
