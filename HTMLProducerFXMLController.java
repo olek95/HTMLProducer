@@ -18,8 +18,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javax.xml.transform.TransformerException;
 
+/**
+ * Klasa <code>HTMLProducerFXMLController</code> reprezentuje działanie okna 
+ * generującego kod HTML. Zawiera przełączniki zmieniające typ strony internetowej,
+ * obszar wyświetlający kod, a także możliwość tworzenia/zmiany kodu HTML wraz z 
+ * możliwością zapisu i odczytu pliku. 
+ * @author AleksanderSklorz
+ */
 public class HTMLProducerFXMLController implements Initializable {
-    
     @FXML
     private Button generateButton;
     @FXML
