@@ -19,9 +19,8 @@ public class HTMLProducer extends Application {
         stage.setScene(scene);
         stage.show();
         stage.setOnCloseRequest(event -> {
-            if(!HTMLProducerFXMLController.getSaved() && !HTMLProducerFXMLController.showWarning()){
+            if(!HTMLProducerFXMLController.getSaved() && !HTMLProducerFXMLController.showWarning())
                 event.consume();
-            }
         });
     }
 
