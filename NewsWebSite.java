@@ -13,8 +13,8 @@ import org.w3c.dom.Text;
  * @author AleksanderSklorz
  */
 public class NewsWebSite extends WebSite{
-    private String[] availableAttributes = {"title", "style"};
-    private String[] availableFormattingElements = {"b", "strong", "i", "em", "mark"};
+    private final static String[] AVAILABLE_ATTRIBUTES = {"title", "style"};
+    private final static String[] AVAILABLE_FORMATTING_ELEMENTS = {"b", "strong", "i", "em", "mark"}; 
     public NewsWebSite(){
         super(); 
         Element bodyElement, headingElement, paragraphElement;
@@ -43,11 +43,11 @@ public class NewsWebSite extends WebSite{
         }
     }
     private void addAttributes(Element el){
-        int attributesNumber = rand.nextInt(availableAttributes.length + 1);
+        int attributesNumber = rand.nextInt(AVAILABLE_ATTRIBUTES.length + 1);
         String attribute;
         if(attributesNumber != 0)
             for(int i = 0; i < attributesNumber; i++){
-                attribute = availableAttributes[rand.nextInt(availableAttributes.length)];
+                attribute = AVAILABLE_ATTRIBUTES[rand.nextInt(AVAILABLE_ATTRIBUTES.length)];
                 if(el.getAttribute(attribute).equals("")){
                     if(attribute.equals("title")) el.setAttribute(attribute, generateText(94, 32, rand.nextInt(50) + 1));
                     else if(attribute.equals("style") && !isMarked(el)){
@@ -58,13 +58,13 @@ public class NewsWebSite extends WebSite{
     }
     private Element formatElement(Element el){
         Element tempElement = null;
-        int elementsNumber = rand.nextInt(availableFormattingElements.length + 1);
-        int[] usedIndexes = new int[availableFormattingElements.length];
+        int elementsNumber = rand.nextInt(AVAILABLE_FORMATTING_ELEMENTS.length + 1);
+        int[] usedIndexes = new int[AVAILABLE_FORMATTING_ELEMENTS.length];
         if(elementsNumber != 0)
             for(int i = 0; i < elementsNumber; i++){
-                int index = rand.nextInt(availableFormattingElements.length);
+                int index = rand.nextInt(AVAILABLE_FORMATTING_ELEMENTS.length);
                 if(usedIndexes[index] != 1){
-                    tempElement = htmlDocument.createElement(availableFormattingElements[index]);
+                    tempElement = htmlDocument.createElement(AVAILABLE_FORMATTING_ELEMENTS[index]);
                     el.appendChild(tempElement);
                     el = tempElement;
                     usedIndexes[index] = 1;
