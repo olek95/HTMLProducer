@@ -12,7 +12,7 @@ import org.w3c.dom.Element;
  * @author AleksanderSklorz
  */
 public class PhotoGalleryWebSite extends WebSite{
-    private String[] availableAttributes = {"title", "width", "height"};
+    private final static String[] AVAILABLE_ATTRIBUTES = {"title", "width", "height"};
     public PhotoGalleryWebSite(){
         super(); 
         Element bodyElement;
@@ -24,9 +24,9 @@ public class PhotoGalleryWebSite extends WebSite{
                 new FileChooser.ExtensionFilter("PNG (*.png)", "*.png"), new FileChooser.ExtensionFilter("GIF (*.gif)", "*.gif"));
         fileChooser.setTitle("Wybór obrazów.");
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(null);
-        for(File f : selectedFiles){
-            bodyElement.appendChild(generatePhoto(f.getPath()));
-        }
+        if(selectedFiles != null)
+            for(File f : selectedFiles)
+                bodyElement.appendChild(generatePhoto(f.getPath()));
     }
     private Element generatePhoto(String path){
         Element imgElement = htmlDocument.createElement("img");
@@ -35,10 +35,10 @@ public class PhotoGalleryWebSite extends WebSite{
         return imgElement;
     }
     private void addAttributes(Element el){
-        int attributesNumber = rand.nextInt(availableAttributes.length + 1);
+        int attributesNumber = rand.nextInt(AVAILABLE_ATTRIBUTES.length + 1);
         String attribute; 
         for(int i = 0; i < attributesNumber; i++){
-            attribute = availableAttributes[rand.nextInt(availableAttributes.length)];
+            attribute = AVAILABLE_ATTRIBUTES[rand.nextInt(AVAILABLE_ATTRIBUTES.length)];
             if(el.getAttribute(attribute).equals("")){
                 if(attribute.equals("title")) el.setAttribute(attribute, generateText(94, 32, rand.nextInt(50) + 1));
                 else el.setAttribute(attribute, (rand.nextInt(500) + 1) + "");
@@ -46,3 +46,4 @@ public class PhotoGalleryWebSite extends WebSite{
         }
     }
 }
+
