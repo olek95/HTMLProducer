@@ -19,12 +19,12 @@
             <items>
                   <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" text="Save" />
                   <MenuItem fx:id="openMenuItem" mnemonicParsing="false" text="Open" />
-              <MenuItem mnemonicParsing="false" text="Exit" />
+              <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Exit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="O programie" />
             </items>
           </Menu>
         </menus>
@@ -57,4 +57,3 @@
       </BorderPane>
    </children>
 </AnchorPane>
-
