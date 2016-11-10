@@ -5,12 +5,16 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -26,10 +30,11 @@ import javax.xml.transform.TransformerException;
  * @author AleksanderSklorz
  */
 public class HTMLProducerFXMLController implements Initializable {
+    private boolean saved = true;
     @FXML
     private Button generateButton;
     @FXML
-    private MenuItem saveMenuItem, openMenuItem;
+    private MenuItem saveMenuItem, openMenuItem, aboutMenuItem, exitMenuItem;
     @FXML
     private TextArea htmlTextArea;
     @FXML
@@ -54,13 +59,34 @@ public class HTMLProducerFXMLController implements Initializable {
            fileChooser.getExtensionFilters().add(new ExtensionFilter("Pliki HTML", "*.html", "*.htm"));
            File selectedFile = fileChooser.showSaveDialog(null);
            if(selectedFile != null) writeToFile(selectedFile.getPath(), htmlTextArea.getText());
+           saved = true;
        });
        openMenuItem.setOnAction((event) -> {
-           FileChooser fileChooser = new FileChooser(); 
-           fileChooser.setTitle("Odczyt plików HTML");
-           fileChooser.getExtensionFilters().add(new ExtensionFilter("Pliki HTML", "*.html", "*.htm"));
-           File selectedFile = fileChooser.showOpenDialog(null);
-           if(selectedFile != null) openFile(selectedFile.getPath());
+            if((!saved && showWarning()) || saved){
+                FileChooser fileChooser = new FileChooser(); 
+                fileChooser.setTitle("Odczyt plików HTML");
+                fileChooser.getExtensionFilters().add(new ExtensionFilter("Pliki HTML", "*.html", "*.htm"));
+                File selectedFile = fileChooser.showOpenDialog(null);
+                if(selectedFile != null) openFile(selectedFile.getPath());
+                saved = true;
+            }
+       });
+       htmlTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
+           saved = false;
+       });
+       aboutMenuItem.setOnAction((event) -> {
+           Alert aboutAlert = new Alert(AlertType.INFORMATION);
+           aboutAlert.setTitle("O programie");
+           aboutAlert.setHeaderText("Jest to program generujący losowy kod HTML dla strony\n"
+                   + "internetowej danego typu. Na początku należy wybrać typ strony, a następnie\n"
+                   + "ją wygenerować przyciskiem Generuj stronę. Jeśli wygenerowana strona\n"
+                   + "się nie podoba, można wygenerować nową lub zmienić jej zawartość w obszarze tekstowym.\n"
+                   + "W przypadku Galerii zdjęć, należy wybrać dodatkowo jeden albo kilka obrazów, które mają zostać\n"
+                   + "umieszczone. Kod można zapisać i odczytać w menu File.");
+           aboutAlert.showAndWait();
+       });
+       exitMenuItem.setOnAction((event) -> {
+           if((!saved && showWarning()) || saved) System.exit(0);
        });
     }    
     private void writeToFile(String path, String html){
@@ -77,5 +103,10 @@ public class HTMLProducerFXMLController implements Initializable {
             Logger.getLogger(HTMLProducerFXMLController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    private boolean showWarning(){
+        Alert aboutAlert = new Alert(AlertType.WARNING, "Nie zapisałeś aktualnego kodu! Czy jesteś pewny decyzji?", ButtonType.YES, ButtonType.NO);
+        aboutAlert.setTitle("Ostrzeżenie");
+        Optional<ButtonType> result = aboutAlert.showAndWait(); 
+        return result.isPresent() && result.get().equals(ButtonType.YES);
+    }
 }
-
