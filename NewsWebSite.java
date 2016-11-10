@@ -5,6 +5,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+/**
+ * Obiekt klasy <code>NewsWebSite</code> reprezentuje stronę internetową typu 
+ * aktualności. Składa się ona z losowo wygenerowanego tekstu. W odróżnieniu 
+ * od klasy InformationWebSite, losowo wygenerowany tekst jest oddzielany przez
+ * losowo wygenerowane wyśrodkowane nagłówki, symbolizujące różnego rodzaju wiadomości. 
+ * @author AleksanderSklorz
+ */
 public class NewsWebSite extends WebSite{
     private String[] availableAttributes = {"title", "style"};
     private String[] availableFormattingElements = {"b", "strong", "i", "em", "mark"};
@@ -12,24 +19,27 @@ public class NewsWebSite extends WebSite{
         super(); 
         Element bodyElement, headingElement, paragraphElement;
         Text text;
-        int pageSize;
+        int headingsNumber, paragraphsNumber;
         titleElement.appendChild(htmlDocument.createTextNode("Aktualności."));
         bodyElement = htmlDocument.createElement("body");
         rootElement.appendChild(bodyElement);
-        pageSize = rand.nextInt(100) + 1; 
+        headingsNumber = rand.nextInt(20) + 1; 
         String tag;
-        for(int i = 0; i < pageSize; i++){
+        for(int i = 0; i < headingsNumber; i++){
             headingElement = htmlDocument.createElement("h1");
             headingElement.setAttribute("style", "text-align:center");
             headingElement.appendChild(htmlDocument.createTextNode(generateText(26, 97, rand.nextInt(25) + 1)));
             bodyElement.appendChild(headingElement);
-            paragraphElement = htmlDocument.createElement("p");
-            Element formattingElement = formatElement(paragraphElement);
-            addAttributes(paragraphElement);
-            text = htmlDocument.createTextNode(generateText(94, 32, rand.nextInt(50) + 1));
-            bodyElement.appendChild(paragraphElement);
-            if(formattingElement == null) paragraphElement.appendChild(text);
-            else formattingElement.appendChild(text);
+            paragraphsNumber = rand.nextInt(100) + 1;
+            for(int k = 0; k < paragraphsNumber; k++){
+                paragraphElement = htmlDocument.createElement("p");
+                Element formattingElement = formatElement(paragraphElement);
+                addAttributes(paragraphElement);
+                text = htmlDocument.createTextNode(generateText(94, 32, rand.nextInt(50) + 1));
+                bodyElement.appendChild(paragraphElement);
+                if(formattingElement == null) paragraphElement.appendChild(text);
+                else formattingElement.appendChild(text);
+            }
         }
     }
     private void addAttributes(Element el){
