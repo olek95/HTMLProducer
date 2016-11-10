@@ -5,6 +5,12 @@ import java.util.List;
 import javafx.stage.FileChooser;
 import org.w3c.dom.Element;
 
+/**
+ * Obiekt klasy <code>PhotoGalleryWebSite</code> reprezentuje stronę internetową 
+ * typu galeria zdjęć. Daje możliwość wyboru obrazów za pomocą okna dialogowego. 
+ * Obrazy są umieszczane z losowym tytułem lub bez niego, z losową szerokością i wysokością. 
+ * @author AleksanderSklorz
+ */
 public class PhotoGalleryWebSite extends WebSite{
     private String[] availableAttributes = {"title", "width", "height"};
     public PhotoGalleryWebSite(){
