@@ -7,6 +7,11 @@ package htmlproducer;
  * @author AleksanderSklorz
  */
 public class WebSiteFactory {
+    /**
+     * Tworzy stronę internetową danego typu. Jeśli taki typ nie istnieje, zwraca null. 
+     * @param type typ strony internetowej (PHOTOS, INFORMATION, CONTACT, NEWS)
+     * @return dany typ strony internetowej lub null, jeśli taki typ nie istnieje. 
+     */
     public static WebSite createWebSite(WebSiteType type){
         if(WebSiteType.PHOTOS.equals(type)){
             return new PhotoGalleryWebSite(); 
