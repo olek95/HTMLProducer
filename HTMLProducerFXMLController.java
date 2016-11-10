@@ -59,7 +59,6 @@ public class HTMLProducerFXMLController implements Initializable {
            fileChooser.getExtensionFilters().add(new ExtensionFilter("Pliki HTML", "*.html", "*.htm"));
            File selectedFile = fileChooser.showSaveDialog(null);
            if(selectedFile != null) writeToFile(selectedFile.getPath(), htmlTextArea.getText());
-           saved = true;
        });
        openMenuItem.setOnAction((event) -> {
             if((!saved && showWarning()) || saved){
@@ -68,7 +67,6 @@ public class HTMLProducerFXMLController implements Initializable {
                 fileChooser.getExtensionFilters().add(new ExtensionFilter("Pliki HTML", "*.html", "*.htm"));
                 File selectedFile = fileChooser.showOpenDialog(null);
                 if(selectedFile != null) openFile(selectedFile.getPath());
-                saved = true;
             }
        });
        htmlTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -92,6 +90,7 @@ public class HTMLProducerFXMLController implements Initializable {
     private void writeToFile(String path, String html){
         try{
             Files.write(Paths.get(path), html.getBytes());
+            saved = true;
         }catch(IOException e){
             Logger.getLogger(HTMLProducerFXMLController.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -99,6 +98,7 @@ public class HTMLProducerFXMLController implements Initializable {
     private void openFile(String path){
         try{
             htmlTextArea.setText(new String(Files.readAllBytes(Paths.get(path))));
+            saved = true;
         }catch(IOException e){
             Logger.getLogger(HTMLProducerFXMLController.class.getName()).log(Level.SEVERE, null, e);
         }
