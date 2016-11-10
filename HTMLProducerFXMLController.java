@@ -30,7 +30,7 @@ import javax.xml.transform.TransformerException;
  * @author AleksanderSklorz
  */
 public class HTMLProducerFXMLController implements Initializable {
-    private boolean saved = true;
+    private static boolean saved = true;
     @FXML
     private Button generateButton;
     @FXML
@@ -103,10 +103,13 @@ public class HTMLProducerFXMLController implements Initializable {
             Logger.getLogger(HTMLProducerFXMLController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    private boolean showWarning(){
+    public static boolean showWarning(){
         Alert aboutAlert = new Alert(AlertType.WARNING, "Nie zapisałeś aktualnego kodu! Czy jesteś pewny decyzji?", ButtonType.YES, ButtonType.NO);
         aboutAlert.setTitle("Ostrzeżenie");
         Optional<ButtonType> result = aboutAlert.showAndWait(); 
         return result.isPresent() && result.get().equals(ButtonType.YES);
+    }
+    public static boolean getSaved(){
+        return saved;
     }
 }
