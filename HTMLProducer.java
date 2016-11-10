@@ -18,10 +18,14 @@ public class HTMLProducer extends Application {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+        stage.setOnCloseRequest(event -> {
+            if(!HTMLProducerFXMLController.getSaved() && !HTMLProducerFXMLController.showWarning()){
+                event.consume();
+            }
+        });
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-    
 }
