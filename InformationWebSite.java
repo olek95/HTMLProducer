@@ -5,34 +5,33 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+/**
+ * Obiekt klasy <code>InformationWebSite</code> reprezentuje informacyjną stronę
+ * internetową. Zawiera ona wiele linii losowo wygenerowanego tekstu, umieszczonego 
+ * w losowym położeniu i losowym formacie/stylu. 
+ * @author AleksanderSklorz
+ */
 public class InformationWebSite extends WebSite{
-    private String[] availableTags = {"h", "p"};
     private String[] availableAttributes = {"title", "style"};
     private String[] availableFormattingElements = {"b", "strong", "i", "em", "mark"};
     public InformationWebSite(){
         super();
-        Element bodyElement, tagElement;
+        Element bodyElement, paragraphElement;
         Text text;
         int pageSize;
         titleElement.appendChild(htmlDocument.createTextNode("Strona informacyjna."));
         bodyElement = htmlDocument.createElement("body");
         rootElement.appendChild(bodyElement);
         pageSize = rand.nextInt(100) + 1; 
-        String tag;
         for(int i = 0; i < pageSize; i++){
-            tagElement = getTag();
-            Element formattingElement = formatElement(tagElement);
-            addAttributes(tagElement);
+            paragraphElement = htmlDocument.createElement("p");
+            Element formattingElement = formatElement(paragraphElement);
+            addAttributes(paragraphElement);
             text = htmlDocument.createTextNode(generateText(94, 32, rand.nextInt(50) + 1));
-            bodyElement.appendChild(tagElement);
-            if(formattingElement == null) tagElement.appendChild(text);
+            bodyElement.appendChild(paragraphElement);
+            if(formattingElement == null) paragraphElement.appendChild(text);
             else formattingElement.appendChild(text);
         }
-    }
-    private Element getTag(){
-        String tag = availableTags[rand.nextInt(availableTags.length)];
-        if(tag.equals("h")) tag += rand.nextInt(6) + 1;
-        return htmlDocument.createElement(tag);
     }
     private void addAttributes(Element el){
         int attributesNumber = rand.nextInt(availableAttributes.length + 1);
@@ -75,7 +74,7 @@ public class InformationWebSite extends WebSite{
             }
         return tempElement;
     }
-    private boolean isMarked(Element el){
+    private boolean isMarked(Element el){ // metoda sprawdzająca czy tekst jest oznaczony, ponieważ oznaczony tekst nie może zmienić koloru 
         NodeList list = el.getChildNodes(); 
         int size = list.getLength(); 
         for(int i = 0; i < size; i++){
