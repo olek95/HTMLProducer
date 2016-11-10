@@ -39,6 +39,11 @@ public abstract class WebSite {
             Logger.getLogger(WebSite.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    /**
+     * Zwraca kod HTML wytworzonej losowo strony internetowej. 
+     * @return kod HTML. 
+     * @throws TransformerException 
+     */
     public String getHtml() throws TransformerException{
         Transformer htmlTransformer = TransformerFactory.newInstance().newTransformer(); 
         htmlTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -48,6 +53,14 @@ public abstract class WebSite {
         htmlTransformer.transform(new DOMSource(htmlDocument), new StreamResult(baos));
         return baos.toString();
     }
+    /**
+     * Generuje losowy ciąg znaków. Składa się on ze znaków ASCII wylosowanych z przedziału stworzonego
+     * z pierwszego i drugiego parametru metody.
+     * @param numberCharacters liczba znaków w przedziale. 
+     * @param rangeStart początek przedziału (według dziesiętnego kodu ASCII)
+     * @param textSize długość losowo utworzonego tekstu. 
+     * @return losowo wygenerowany tekst. 
+     */
     protected String generateText(int numberCharacters, int rangeStart, int textSize){
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < textSize; i++)
