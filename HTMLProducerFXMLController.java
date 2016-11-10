@@ -26,7 +26,8 @@ import javax.xml.transform.TransformerException;
  * Klasa <code>HTMLProducerFXMLController</code> reprezentuje działanie okna 
  * generującego kod HTML. Zawiera przełączniki zmieniające typ strony internetowej,
  * obszar wyświetlający kod, a także możliwość tworzenia/zmiany kodu HTML wraz z 
- * możliwością zapisu i odczytu pliku. 
+ * możliwością zapisu i odczytu pliku. Ostrzega przed zamknięciem okna lub wczytaniu 
+ * nowego kodu z pliku, jeśli aktualny kod nie został zapisany. 
  * @author AleksanderSklorz
  */
 public class HTMLProducerFXMLController implements Initializable {
@@ -41,7 +42,7 @@ public class HTMLProducerFXMLController implements Initializable {
     private RadioButton photoGalleryRadioButton, informationRadioButton, contactRadioButton, newsRadioButton;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       generateButton.setOnAction((event) -> {
+       generateButton.setOnAction(event -> {
             WebSite site;
             if(photoGalleryRadioButton.isSelected()) site = WebSiteFactory.createWebSite(WebSiteType.PHOTOS);
             else if(informationRadioButton.isSelected()) site = WebSiteFactory.createWebSite(WebSiteType.INFORMATION);
@@ -53,14 +54,14 @@ public class HTMLProducerFXMLController implements Initializable {
                 Logger.getLogger(HTMLProducerFXMLController.class.getName()).log(Level.SEVERE, null, e);
             }
         });
-       saveMenuItem.setOnAction((event) -> {
+       saveMenuItem.setOnAction(event -> {
            FileChooser fileChooser = new FileChooser(); 
            fileChooser.setTitle("Zapis plików HTML");
            fileChooser.getExtensionFilters().add(new ExtensionFilter("Pliki HTML", "*.html", "*.htm"));
            File selectedFile = fileChooser.showSaveDialog(null);
            if(selectedFile != null) writeToFile(selectedFile.getPath(), htmlTextArea.getText());
        });
-       openMenuItem.setOnAction((event) -> {
+       openMenuItem.setOnAction(event -> {
             if((!saved && showWarning()) || saved){
                 FileChooser fileChooser = new FileChooser(); 
                 fileChooser.setTitle("Odczyt plików HTML");
@@ -72,7 +73,7 @@ public class HTMLProducerFXMLController implements Initializable {
        htmlTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
            saved = false;
        });
-       aboutMenuItem.setOnAction((event) -> {
+       aboutMenuItem.setOnAction(event -> {
            Alert aboutAlert = new Alert(AlertType.INFORMATION);
            aboutAlert.setTitle("O programie");
            aboutAlert.setHeaderText("Jest to program generujący losowy kod HTML dla strony\n"
@@ -83,10 +84,28 @@ public class HTMLProducerFXMLController implements Initializable {
                    + "umieszczone. Kod można zapisać i odczytać w menu File.");
            aboutAlert.showAndWait();
        });
-       exitMenuItem.setOnAction((event) -> {
+       exitMenuItem.setOnAction(event -> {
            if((!saved && showWarning()) || saved) System.exit(0);
        });
     }    
+    /**
+     * Ostrzega przed zamknięciem okna lub przed wczytaniem nowego kodu z pliku, 
+     * w przypadku gdy aktualny kod nie został zapisany. 
+     * @return true jeśli potwierdzono zamknięcie okna, false w przeciwnym przypadku. 
+     */
+    public static boolean showWarning(){
+        Alert aboutAlert = new Alert(AlertType.WARNING, "Nie zapisałeś aktualnego kodu! Czy jesteś pewny decyzji?", ButtonType.YES, ButtonType.NO);
+        aboutAlert.setTitle("Ostrzeżenie");
+        Optional<ButtonType> result = aboutAlert.showAndWait(); 
+        return result.isPresent() && result.get().equals(ButtonType.YES);
+    }
+    /**
+     * Zwraca informację czy aktualny kod jest zapisany. 
+     * @return true jeśli kod jest zapisany, false w przeciwnym przypadku. 
+     */
+    public static boolean getSaved(){
+        return saved;
+    }
     private void writeToFile(String path, String html){
         try{
             Files.write(Paths.get(path), html.getBytes());
@@ -102,14 +121,5 @@ public class HTMLProducerFXMLController implements Initializable {
         }catch(IOException e){
             Logger.getLogger(HTMLProducerFXMLController.class.getName()).log(Level.SEVERE, null, e);
         }
-    }
-    public static boolean showWarning(){
-        Alert aboutAlert = new Alert(AlertType.WARNING, "Nie zapisałeś aktualnego kodu! Czy jesteś pewny decyzji?", ButtonType.YES, ButtonType.NO);
-        aboutAlert.setTitle("Ostrzeżenie");
-        Optional<ButtonType> result = aboutAlert.showAndWait(); 
-        return result.isPresent() && result.get().equals(ButtonType.YES);
-    }
-    public static boolean getSaved(){
-        return saved;
     }
 }
