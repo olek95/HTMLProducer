@@ -2,6 +2,13 @@ package htmlproducer;
 
 import org.w3c.dom.Element;
 
+/**
+ * Obiekt klasy <code>ContactWebSite</code> reprezentuje kontaktową stronę 
+ * internetową. Zawiera ona takie dane kontaktowe jak: imię, nazwisko, miasto, 
+ * ulica, kod pocztowy i numer telefonu. Wszystkie te dane są wygenerowane losowo, 
+ * przestrzegając jednocześnie odpowiedniego dla nich formatu np. nr telefonu 9 cyfrowy. 
+ * @author AleksanderSklorz
+ */
 public class ContactWebSite extends WebSite{
     public ContactWebSite(){
         super();
@@ -37,4 +44,5 @@ public class ContactWebSite extends WebSite{
         }
     }
 }
+
 
