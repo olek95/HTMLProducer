@@ -45,4 +45,3 @@ public class ContactWebSite extends WebSite{
     }
 }
 
-
