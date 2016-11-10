@@ -49,10 +49,10 @@ public abstract class WebSite {
         return baos.toString();
     }
     protected String generateText(int numberCharacters, int rangeStart, int textSize){
-        String text = "";
+        StringBuilder sb = new StringBuilder();
         for(int i = 0; i < textSize; i++)
-            text += (char)(rand.nextInt(numberCharacters) + rangeStart);
-        return text;
+            sb.append((char)(rand.nextInt(numberCharacters) + rangeStart));
+        return sb.toString();
     }
 }
 
